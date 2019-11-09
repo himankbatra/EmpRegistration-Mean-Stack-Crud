@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <title>Employee App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
+  <script src="script.js"></script>
+</head>
+
+<body>
+  <div ng-app="myApp" class="container" style="width:550px">
+    <div id="top" style="text-align:center;color:blue">
+      <h3><b>Employee Registraion Form</b></h3>
+    </div>
+    <div ng-controller="employeeCtrl" ng-init="get()">
+      <form id="myForm" role="form" class="well" ng-hide="query">
+        <div class="form-group">
+          <label for="name"> Name: </label>
+          <input type="text" id="name" class="form-control" placeholder="Enter Name " ng-model="newemp.name" />
+        </div>
+        <div class="form-group">
+          <label for="position"> Position: </label>
+          <input type="text" id="position" class="form-control" placeholder="Enter Position "
+            ng-model="newemp.position" />
+        </div>
+        <div class="form-group">
+          <label for="office"> Office: </label>
+          <input type="text" id="office" class="form-control" placeholder="Enter Office " ng-model="newemp.office" />
+        </div>
+        <div class="form-group">
+          <label for="salary"> Salary: </label>
+          <input type="text" id="salary" class="form-control" placeholder="Enter Salary " ng-model="newemp.salary" />
+        </div>
+        <br />
+        <input ng-show="!editMode" type="button" class="btn btn-primary" ng-click="saveEmp()" value="Submit" />
+        <input ng-show="editMode" type="button" class="btn btn-primary" ng-click="updateEmp()" value="Update" />
+        <input type="button" ng-click="reset()" class="btn btn-danger" value="Reset" />
+        <div ng-style="messageStyle">{{message}}</div>
+      </form>
+      <div>
+        <hr>
+        <h4 id="bottom"><b>Registered Employees</b></h4>
+
+        <div align="right">
+          <span class="glyphicon glyphicon-search"></span> Search:
+          <input ng-model="query" />
+        </div>
+        <hr />
+
+        <table id="myTable" ng-if="emps.length" class="table table-striped table-bordered table-hover">
+          <thead>
+            <tr class="info">
+              <th>Name</th>
+              <th>Position</th>
+              <th>Office</th>
+              <th>Salary</th>
+              <th ng-if="!query">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="emp in emps  | filter : query">
+              <td>{{ emp.name }}</td>
+              <td>{{ emp.position }}</td>
+              <td>{{ emp.office }}</td>
+              <td>{{ emp.salary }}</td>
+              <td ng-if="!query">
+                <button type="button" ng-click="editEmp(emp)" class="btn btn-info btn-sm">
+                  <span class="glyphicon glyphicon-edit"></span> Edit
+                </button>
+                &nbsp;
+                <button type="button" ng-click="deleteEmp(emp._id)" class="btn btn-danger btn-sm">
+                  <span class="glyphicon glyphicon-trash"></span>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="text-align:center;color:red" ng-hide="((emps | filter : query).length > 0 )|| (emps.length > 0) ">
+          No Employees Found
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
